@@ -1,6 +1,6 @@
 # G1 - Rekursive Figuren / Bäume
 
-![titel_bild](assets/image.png)
+![titel_bild](assets/title_image.png)
 
 
 Dieses Programm erstellt rekursive Figuren und speichert sie in einer SVG datei ab.
@@ -36,7 +36,7 @@ Dieses Programm macht viel mit dem SVG Standart. Mehr zu wie es das macht und ei
 | ```max_generations``` | pos. int    | Die anzahl an generationen, die generiert werden sollen |
 | ```children_count```| pos int       | Wie viele children jedes mal generiert werden sollen |
 
-
+**Tipp**: Spiele einfach mit den Einstellungen um rauszufinden was sie tuen.
 
 ## Kurzer Überblick des Programmes
 

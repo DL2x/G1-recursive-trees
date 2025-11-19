@@ -60,12 +60,27 @@ SVG unterstüzt auch noch andere Formen:
  - ...
 
 
-## Nutzung in dem Projekt
+## Umsetzung im Projekt
+
 ### Setzen des Headers:
 ```python
-svg_header = '<?xml version="1.0" encoding="UTF-8"?>\n<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1000">'
+def init_file(filename):
+  open(filename, 'w').close()
+  to_file(f'<?xml version="1.0" encoding="UTF-8"?>\n<svg xmlns="http://www.w3.org/2000/svg" width="{str(width)}" height="{str(height)}">')
+  if not colour_background is None: # if colour_background = None: Durchsichtiger Hintergrund
+    to_file(f'<rect width="{str(width)}" height="{str(height)}" fill="{colour_background}" />')
+  to_file('<!-- vv Contents vv -->/n')
+```
 
-to_file(svg_header)
+def to_file(contents: str):
+    try: 
+      with open(file, 'a') as f: f.write(contents + "\n")
+    except: 
+      print("Error writing to svg file!")
+
+def draw_line(x1: float, y1: float, x2: float, y2: float, width: float, colour: str = "#000000"):
+    line_str = f'<line x1="{str(x1)}" y1="{str(y1)}" x2="{str(x2)}" y2="{str(y2)}" stroke="{colour}" stroke-width="{str(width)}" />'
+    to_file(line_str)
 ```
 
 ### Hintergrund weiß ausfüllen:
