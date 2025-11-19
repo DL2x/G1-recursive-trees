@@ -8,23 +8,19 @@ file = 'image.svg'
 mode = "line"
 
 # Board
-height = 1000
-width = 1000
+height = 900
+width = 1600
 
 # Size
 initial_size = 200
-dropoff = 1.5
+dropoff = 1.38
+line_width = 20
 exponential_dropoff = True
+width_factor = 1/20
 
 # Generations & Children
-max_generations = 15
+max_generations = 10
 children_count = 2
-line_width = 4
-
-# Spread
-spread = 45
-keep_rotation = True
-exponential_length = False
 
 ## SVG STUFF ##
 def init_file(filename):
@@ -32,7 +28,7 @@ def init_file(filename):
   to_file('<?xml version="1.0" encoding="UTF-8"?>\n<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1000">')
   to_file(f'<rect width="{str(width)}" height="{str(height)}" fill="#FFFFFF" />')
 
-def to_file(contents: str):
+def toFile(contents: str):
     try: 
       with open(file, 'a') as f: f.write(contents + "\n")
     except: 
