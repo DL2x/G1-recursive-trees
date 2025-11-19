@@ -5,39 +5,34 @@ file = 'image.svg'
 
 ## SETTINGS ##
 # Board
-height = 1000
-width = 1000
+height = 900
+width = 1600
 
 # Size
 initial_size = 200
-dropoff = 2
+dropoff = 1.38
 line_width = 20
 exponential_dropoff = True
+width_factor = 1/20
 
 # Generations & Children
-max_generations = 5
-children_count = 3
-
-# Spread
-spread = 45
-keep_rotation = True
-exponential_length = False
+max_generations = 10
+children_count = 2
 
 ## SVG STUFF ##
 def init_file(filename):
   open(filename, 'w').close()
-  toFile('<?xml version="1.0" encoding="UTF-8"?>\n<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1000">')
-  toFile(f'<rect width="{str(width)}" height="{str(height)}" fill="#FFFFFF" />')
+  toFile(f'<?xml version="1.0" encoding="UTF-8"?>\n<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}">')
+  #toFile(f'<rect width="{str(width)}" height="{str(height)}" fill="#000000" />')
 
-def to_file(contents: str):
+def toFile(contents: str):
     try: 
       with open(file, 'a') as f: f.write(contents + "\n")
     except: 
       print("Error writing to svg file!")
 
-def draw_line(self, x1: float, y1: float, x2: float, y2: float, width: float, colour: str):
-    line_str = f'<line x1="{str(x1)}" y1="{str(y1)}" x2="{str(x2)}" y2="{str(y2)}" stroke="{colour}" stroke-width="{str(width)}" />'
-    to_file(line_str)
+def drawLine(x1,y1,x2,y2,width):
+  toFile(f'<line x1="{str(x1)}" y1="{str(y1)}" x2="{str(x2)}" y2="{str(y2)}" stroke="#FFFFFF" stroke-width="{str(width)}" />')
 
 ## NODES ##
 def node(startx, starty, generation, alpha, length):
@@ -57,8 +52,8 @@ def node(startx, starty, generation, alpha, length):
   endy = starty + y_offset
 
   ## Drawing
-  drawLine(startx,starty,endx,endy,new_length/line_width)
-  draw_line(startx,starty,endx,endy,(line_width / (generation + 1)))
+  drawLine(startx,starty,endx,endy,new_length*width_factor)
+  drawLine(startx,starty,endx,endy,new_length*width_factor)
 
   if generation > max_generations: return
 
