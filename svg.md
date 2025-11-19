@@ -20,46 +20,61 @@ vector basiert    ->  Scallierung egal
 
 ## Nutzung / Beispiele
 ### Init:
-```XML
+```xml
 <?xml version="1.0" encoding="UTF-8"?>\n<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1000">
 ```
 ### Linie:
-```XML
+```xml
 <line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" stroke="{color}" stroke-width="{width}" />
 ```
 ### Rechteck:
-```XML
-<rect width="{width}" height="{height}" fill="{colour}" />
+```xml
+<rect x="0" y="0" width="{width}" height="{height}" fill="{colour}" />
 ```
+*Note:* x & y müssen nicht gegeben werden und werden automatisch auf 0|0
+
 ### Verschieben:
-```XML
+```xml
 <g transform="translate({x},{y})">
 ```
 ### Drehen:
-```XML
+```xml
 <g transform="rotate({rot},{x},{y})">
 ```
 
-### Sonstiges:
-Kreis, Elipse, Polygon, Text, ...
+### Andere Formen:
+
+SVG unterstüzt auch noch andere Formen:
+ - Kreis, 
+ - Elipse,
+ - Polygon,
+ - Text,
+ - ...
 
 
-## Einbettung
-### Deklaration:
-```PYTHON
-def __init__(self, file: str):
-    self.svg_header = '<?xml version="1.0" encoding="UTF-8"?>\n<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1000">'
-    self.svg_footer = '</svg>'
+## Nutzung in dem Projekt
+### Setzen des Headers:
+```python
+svg_header = '<?xml version="1.0" encoding="UTF-8"?>\n<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1000">'
+
+to_file(svg_header)
+```
+
+### Hintergrund weiß ausfüllen:
+```python
+to_file(f'<rect width="{str(width)}" height="{str(height)}" fill="#FFFFFF" />')
 ```
 
 ### Linie:
-```PYTHON
+```python
 def line(self, x1: float, y1: float, x2: float, y2: float, width: float, colour: str):
-    return f'<line x1="{str(x1)}" y1="{str(y1)}" x2="{str(x2)}" y2="{str(y2)}" stroke="{colour}" stroke-width="{str(width)}" />'
+    line_str = f'<line x1="{str(x1)}" y1="{str(y1)}" x2="{str(x2)}" y2="{str(y2)}" stroke="{colour}" stroke-width="{str(width)}" />'
+    to_file(line_str)
 ```
 
-### Rechteck:
-```PYTHON
-def rect(self, width: float, height: str, colour: str):
-    return f'<rect width="{str(width)}" height="{str(height)}" fill="{colour}" />'
+### Setzen des Footers
+```python
+svg_footer = '</svg>'
+
+to_file(svg_footer)
 ```

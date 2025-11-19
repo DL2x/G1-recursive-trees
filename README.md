@@ -77,6 +77,8 @@ da wir auch spread haben, können wir erstmal alpha ausrechnen: (TODO: ausfürli
 child_multi = child_num - math.ceil(children_count_parent / 2)
 if ((children_count_parent % 2) == 0):
   if child_num <= (children_count_parent / 2): child_multi -= 1
+  if child_multi < 0: child_multi += 0.5
+  else: child_multi -= 0.5
 
 if generation == 0:
   alpha = 0
