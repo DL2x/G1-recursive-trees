@@ -14,8 +14,12 @@ width = 1600
 # Size
 initial_size = 200
 dropoff = 1.38
-line_width = 1/20
 exponential_dropoff = True
+line_width = 1/20
+
+# Colour
+olour_background = "#FFFFFF"
+colour_lines     = "#000000"
 
 # Generations & Children
 max_generations = 10
@@ -25,7 +29,7 @@ children_count = 2
 def init_file(filename):
   open(filename, 'w').close()
   to_file(f'<?xml version="1.0" encoding="UTF-8"?>\n<svg xmlns="http://www.w3.org/2000/svg" width="{str(width)}" height="{str(height)}">')
-  to_file(f'<rect width="{str(width)}" height="{str(height)}" fill="#FFFFFF" />')
+  to_file(f'<rect width="{str(width)}" height="{str(height)}" fill="{colour_background}" />')
 
 def to_file(contents: str):
     try: 
@@ -56,7 +60,7 @@ def node(startx, starty, generation, alpha, length):
 
   ## Drawing
   if mode == "line":
-    draw_line(x1=startx, y1=starty, x2=endx, y2=endy, width=(new_length * line_width), colour="#000000")
+    draw_line(x1=startx, y1=starty, x2=endx, y2=endy, width=(new_length * line_width), colour=colour_lines)
 
   if generation > max_generations: return
 
