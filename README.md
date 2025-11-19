@@ -76,18 +76,19 @@ da wir auch spread haben, können wir erstmal alpha ausrechnen: (TODO: ausfürli
 ## Mathe
 child_multi = child_num - math.ceil(children_count_parent / 2)
 if ((children_count_parent % 2) == 0):
-if child_num <= (children_count_parent / 2): child_multi -= 1
+  if child_num <= (children_count_parent / 2): child_multi -= 1
 
 if generation == 0:
-alpha = 0
+  alpha = 0
 else:
-if do_spread_dropoff: spread_full = (spread / (generation / (1 / spread_dropoff)))
-else:                 spread_full = spread
+  if do_spread_dropoff: spread_full = (spread / (generation / (1 / spread_dropoff)))
+else: 
+  spread_full = spread
 
 if (rotation is None) or (not keep_rotation):
-    alpha = (            spread_full * child_multi)
+  alpha = (            spread_full * child_multi)
 else:
-    alpha = (rotation + (spread_full * child_multi))
+  alpha = (rotation + (spread_full * child_multi))
 ```
 
 Nun müssen wir alpha von Degress in Radial umwandeln: (also statt 1 mal komplett rum = 360; 1 mal komplett rum = 2pi) (TODO: besser ausdrücken)
