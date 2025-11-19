@@ -12,17 +12,16 @@ Dafür müsst ihr nur das Programm runterladen und die konstanten Variablen in d
 
 Dieses Programm macht viel mit dem SVG Standart. Mehr zu wie es das macht und eine kleine Übersicht [hier](docs/svg.md).
 
-Eine kleine liste an wichtigen Vokabeln: (Ja, ich weiß; das ist alles ein schreckliches Deutsch-Englisch Gemisch)
- - **Node**: so werden oft die verschiedenen knotenpunkte einer rekursiven Strucktur genannt. In userem Programm zeichnet aber jede node außerdem eine "Figur"
+Eine kleine Liste an wichtigen Vokabeln: (Ja, ich weiß; das ist alles ein schreckliches Deutsch-Englisch Gemisch)
+ - **Node**: so werden oft die verschiedenen Knotenpunkte einer rekursiven Struktur genannt. In userem Programm zeichnet aber jede Node außerdem eine "Figur"
  - **Figur**: die einfache Form, die rekursiv gezeichnet wird. [Hier](assets/title_image.png) ist die Figur eine Line. Sie kann aber auch ein Dreieck oder Quadrad (oder jegliche andere Form) sein
- - **Parent**: eine Parent Node, ist einfach die Node, die die Child Node hervorgerufen hat. Könnt ihr euch so ähnlich wie beim Stammbaum vorstellen.
- - **Child**: siehe Parent
- - **Mother node**: Die aller erste Node. Sie wird in der Regel im Programm direkt aufgerufen.
+ - **Parent**: eine Parent Node ist einfach die Node, die die Child Node hervorgerufen hat. Könnt ihr euch so ähnlich wie beim Stammbaum vorstellen.
+ - **Child**: siehe ```Parent```
+ - **Mother node**: Die allererste Node. Sie wird in der Regel im Programm direkt aufgerufen.
 
 ## Einstellungen
-
-*Note*: Nur ein kurzer Überblick!  
-*Note*: Einige Erklärungen machen möglicheweise keinen Sinn, wenn ihr das Programm nicht versteht
+ 
+*Note*: Einige Erklärungen machen möglicheweise keinen Sinn, wenn ihr das Programm noch nicht versteht
 
 | Einstellung        | mögliche Werte | Erklärung                              |
 | :----------------- | :------------- | :------------------------------------- |
@@ -43,7 +42,7 @@ Eine kleine liste an wichtigen Vokabeln: (Ja, ich weiß; das ist alles ein schre
 | ```max_generations``` | pos. int    | Die anzahl an generationen, die generiert werden sollen |
 | ```children_count```| pos int       | Wie viele children jedes mal generiert werden sollen |
 
-**Tipp**: Spiele einfach mit den Einstellungen um rauszufinden was sie tuen.
+**Tipp**: Spielt einfach mit den Einstellungen rum, um rauszufinden was sie tun.
 
 ## Kurzer Überblick des Programmes
 
@@ -53,11 +52,11 @@ Importieren des "math" modules für sinus, cosinus, pi, etc:
 import math
 ```
 
-### SVG Zeugs
+### SVG Zeug
 
 ---
 
-Deklaration von ganz schön viel zeugs, um mit SVGs zu interagieren.  
+Deklaration von ganz schön viel Zeugs, um mit SVGs zu interagieren.  
 Keine Sorge: das sieht schlimmer aus, als es ist!
 
 Die Datei öffnen, leeren (damit wir keine alten Daten mehr haben) und den xml + svg header reinschreiben:
@@ -78,7 +77,7 @@ def init_file(filename):
 
 ---
 
-Eine super einfache Funktion, um mit nur einem befehl daten in die SVG zu schreiben:
+Eine super einfache Funktion, um mit nur einem Befehl Daten in die SVG zu schreiben:
 
 ```python
 # Diese Funktion schreibt strings in die SVG Datei
@@ -92,9 +91,9 @@ def to_file(contents: str):
 
 Hier benutzen wir eine Try-Except-Struktur, die wir im Unterricht noch nicht hatten.  
 Diese Strukturen können benutzt werden um Crashes vorzubeugen:  
-Sollte eigentlich das Programm, aufgrund des Codes unter ```try:```, Crashen, führt python einfach stattdessen den Code unter ```except``` aus.
+Sollte eigentlich das Programm, aufgrund des Codes unter ```try```, crashen, führt Python einfach stattdessen den Code unter ```except``` aus.
 
-Mit ```with open(pfad_zu_der_datei, oeffnungs_modus) as variablenname_fuer_die_datei``` kann man in Python Dateien als Text Dateien öffnen.  
+Mit ```with open(pfad_zur_datei, modus) as variablenname``` kann man in Python Dateien als ein Text öffnen.  
 Wir benutzen: 
 
 ```python
@@ -104,7 +103,7 @@ with open(file, 'a') as f:
 Also:
  - Datei: Inhalt der ```file``` variable (also 'image.svg')
  - Modus: ```a```: append mode; wir werden den Inhalt der Datei nicht ersetzen, sondern anhängen
- - Name: ```f```: steht für 'file' (dieser Name ist ja aber schon vergeben); ist die Variable, welche die Datei representiert (idk wie ich das erklären soll)
+ - Name: ```f```: steht für 'file' (dieser Name ist ja aber schon vergeben); ist die Variable, welche die Datei representiert, mit der wir arbeiten, wenn wir die Datei bearbeiten wollen.
 
 Und dann können wir neue Linien mit ```f.write(some_string)``` hinzufügen:
 
@@ -113,6 +112,8 @@ f.write(contents + "\n")
 ```
 
 *Note*: ```\n``` bedeutet 'newline', also eine neue zeile, denn 'write' fügt nicht automatisch einen Zeilenumbruch hinzu.
+
+*Note*: Wir benutzen hier kein ```f.close()```, da ```with``` das für uns macht.
 
 Mehr infos zu Python's ```open``` Befehl [hier](https://docs.python.org/3/library/functions.html#open).
 
@@ -134,17 +135,17 @@ def draw_line(x1: float, y1: float, x2: float, y2: float,
 
 Diese Linie geht von P¹(x1|y1) zu P²(x2|y2). (Diese Punkte werden noch seeeehr wichtig..)
 
-Wenn du mehr über svg Linien wissen willst, kannst du [hier](docs/svg.md#linie) mehr finden.
+Wenn du mehr über svg-line wissen willst, kannst du [hier](docs/svg.md#linie) mehr finden.
 
 Die Argumente (x1,x2,y1,y2,width,colour) werden dann mithilfe von [f-strings](https://docs.python.org/3/tutorial/inputoutput.html#tut-f-strings) in den String eingegeben.
 
 Sollte der Kommentar nicht 'None' sein, hängen wir dann noch den Komentar ran. (Komentare in xml werden mit ```<!-- Kommentar Hier -->``` definiert, nicht mit ```# Kommentar hier```, wie in Python)
 
-Danach schreiben wir alles zu der SVG Datei (mithilfe unserer ```to_file``` Funktion von oben).
+Danach schreiben wir alles in die Datei (mithilfe unserer ```to_file``` Funktion von oben).
 
 ---
 
-Diese Funktion Sieht zwar unglaublich kompliziert aus, ist aber eigentlich nur die ```draw_line``` Funktion von oben, mit mehr Argumenten
+Diese Funktion sieht zwar unglaublich kompliziert aus, ist aber eigentlich nur die ```draw_line``` Funktion von oben, mit mehr Argumenten
 
 ```python
 # Diese Funktion malt ein Rechteck in die SVG Datei
