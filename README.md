@@ -10,7 +10,7 @@ import math
 ```
 
 * importieren von math --> sinus, cosinus & ceil (aufrunden)
-* importieren von svg.py (siehe [hier](#svg-py))
+* importieren von svg.py (siehe [hier](https://github.com/IamLegende7/G1-recursive-trees/blob/main/svg.md))
 
 ```python
 debug = False # Debug infos
@@ -77,8 +77,6 @@ da wir auch spread haben, können wir erstmal alpha ausrechnen: (TODO: ausfürli
 child_multi = child_num - math.ceil(children_count_parent / 2)
 if ((children_count_parent % 2) == 0):
 if child_num <= (children_count_parent / 2): child_multi -= 1
-if child_multi < 0: child_multi += 0.5
-else: child_multi -= 0.5
 
 if generation == 0:
 alpha = 0
@@ -161,11 +159,3 @@ svg_writer.close()
 ```
 
 **und wir sind fertig!**
-
-<a name="svg-py" />
-
-## svg.py
-
-TODO: svg.py erklären (kurz, war ja nicht die aufgabe)
-
-**Note:** hierzu muss auch kurz der svg standard und vector- vs. rastergrafiken erklärt werden
