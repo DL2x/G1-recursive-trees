@@ -26,6 +26,7 @@ Eine kleine Liste an wichtigen Vokabeln: (Ja, ich weiß; das ist alles ein schre
 | :------------------------ | :--------------- | :------------------------------------------------------ |
 | **General**                                                                                            |
 | ```mode```                | "line", "quad"   | Die Formen die erstellt werden sollen                   |
+| ```submode```             | None, "pythagoras" | Ein weiterführender Modus, der für manche spezielle Figuren nötig ist |
 | ```start```               | "top", "bottom", "mid" | Wo die Figur anfangen sollte                      |
 |                                                                                                        |
 | **Board**                                                                                              |
@@ -69,6 +70,7 @@ Eine kleine Liste an wichtigen Vokabeln: (Ja, ich weiß; das ist alles ein schre
   | :-----------------        | :------------- |
   | **General**                                |
   | ```mode```                | "line"         |
+  | ```submode```             | None           |
   | ```start```               | "top"          |
   | **Board**                                  |
   | ```heigth```              | 900            |
@@ -102,6 +104,7 @@ Eine kleine Liste an wichtigen Vokabeln: (Ja, ich weiß; das ist alles ein schre
   | :-----------------        | :------------- |
   | **General**                                |
   | ```mode```                | "quad"         |
+  | ```submode```             | None           |
   | ```start```               | "bottom"       |
   | **Board**                                  |
   | ```heigth```              | 900            |
@@ -135,6 +138,7 @@ Eine kleine Liste an wichtigen Vokabeln: (Ja, ich weiß; das ist alles ein schre
   | :-----------------        | :------------- |
   | **General**                                |
   | ```mode```                | "quad"         |
+  | ```submode```             | None           |
   | ```start```               | "bottom"       |
   | **Board**                                  |
   | ```heigth```              | 900            |
@@ -168,6 +172,7 @@ Eine kleine Liste an wichtigen Vokabeln: (Ja, ich weiß; das ist alles ein schre
   | :-----------------        | :------------- |
   | **General**                                |
   | ```mode```                | "quad"         |
+  | ```submode```             | None           |
   | ```start```               | "bottom"       |
   | **Board**                                  |
   | ```heigth```              | 900            |
@@ -188,6 +193,40 @@ Eine kleine Liste an wichtigen Vokabeln: (Ja, ich weiß; das ist alles ein schre
   | ```anchor_parent```       | "corner"       |
   | **Generations & Children**                 |
   | ```max_generations```     | 10             |
+  | ```children_count```      | 1              |
+
+</details>
+
+<details>
+  <summary> Einstellungen für den Pythagoras-Baum</summary>
+
+  ![beispiel_5](beispiele/5.pythagoras.png)
+
+  | Einstellung               | Wert           |
+  | :-----------------        | :------------- |
+  | **General**                                |
+  | ```mode```                | "quad"         |
+  | ```submode```             | "pythagoras"   |
+  | ```start```               | "bottom"       |
+  | **Board**                                  |
+  | ```heigth```              | 900            |
+  | ```width```               | 1600           |
+  | **Size**                                   |
+  | ```initial_size```        | 200            |
+  | ```dropoff```             | 1.2            |
+  | ```exponential_dropoff``` | True           |
+  | ```line_width```          | 1/20           |
+  | **Rotation**                               |
+  | ```keep_rotation```       | True           |
+  | ```spread```              | 30             |
+  | **Colour**                                 |
+  | ```colour_background```   | "#FFFFFF"    |
+  | ```colour_lines```        | "#000000"    |
+  | **Location**                               |
+  | ```anchor_child```        | "corner"       |
+  | ```anchor_parent```       | "corner"       |
+  | **Generations & Children**                 |
+  | ```max_generations```     | 14             |
   | ```children_count```      | 1              |
 
 </details>
@@ -292,77 +331,5 @@ Die Argumente (x1,x2,y1,y2,width,colour) werden dann mithilfe von [f-strings](ht
 Sollte der Kommentar nicht 'None' sein, hängen wir dann noch den Komentar ran. (Komentare in xml werden mit ```<!-- Kommentar Hier -->``` definiert, nicht mit ```# Kommentar hier```, wie in Python)
 
 Danach schreiben wir alles in die Datei (mithilfe unserer ```to_file``` Funktion von oben).
-
----
-
-Diese Funktion sieht zwar unglaublich kompliziert aus, ist aber eigentlich nur die ```draw_line``` Funktion von oben, mit mehr Argumenten
-
-```python
-# Diese Funktion malt ein Rechteck in die SVG Datei
-def draw_rect(width: float, height: float,                               # Nötiges Zeugs
-              colour: str = None,                                        # Farbe
-              x: float = 0, y: float = 0,                                # x, y Position
-              border_colour: str = None, border_width: str = None,       # Rand
-              rotation: str = 0, rotx: float = None, roty: float = None, # Drehen
-              comment: str = None
-              ):
-  rect_parts = [] # Liste, in der alle Teile des Rechtecks gespeichert werden
-  
-  ## Drehungs Header ##
-  if rotx is None: rotx = x # Wenn nicht gesetzt: setze auf x, bzw. y
-  if roty is None: roty = y
-  if rotation != 0: rect_parts.append(f'<g transform="rotate({rotation}, {rotx}, {roty})">\n')
-
-  ## Nötiges ##
-  rect_parts.append(f'<rect')
-  rect_parts.append(f'x="{str(x)}" y="{str(y)}" width="{str(width)}" height="{str(height)}"')
-
-  ## Farbe ##
-  if not (colour is None): rect_parts.append(f'fill="{colour}"')
-  else: rect_parts.append('fill="none"')
-
-  ## Border ##
-  if not (border_colour is None): rect_parts.append(f'stroke="{border_colour}"')
-  if not (border_width is None): rect_parts.append(f'stroke-width="{str(border_width)}"')
-
-  ## Rect Ende ##
-  rect_parts.append('/>')
-
-  ## Kommentar ##
-  if not (comment is None): rect_parts.append(f'<!-- {comment} -->')
-
-  ## Drehung Ende ##
-  if rotation != 0: rect_parts.append('\n</g>')
-
-  # Alle in rect_str zusammenfügen
-  rect_str = ""
-  for x in rect_parts:
-    rect_str = rect_str + " " + x
-
-  # In die SVG Datei schreiben
-  to_file(rect_str)
-```
-
-Da wir mehr Argumente haben (von denen viele optional sind), müssen wir ein wenig kreativ werden:
-
-Anstatt den String für das Rechteck als nur einen String zu speichern, sammeln wir ersmal alle teile in der liste ```rect_parts```, z.b. hier:
-
-```python
-rect_parts.append(f'<rect')
-rect_parts.append(f'x="{str(x)}" y="{str(y)}" width="{str(width)}" height="{str(height)}"')
-```
-
-und setzen den String dann am Ende zusammen:
-
-```python
-rect_str = ""
-for x in rect_parts:
-rect_str = rect_str + " " + x
-
-# In die SVG Datei schreiben
-to_file(rect_str)
-```
-
-Ansonsten benutzt die Funktion einfach nur svg-rect, nicht svg-line. Mehr Infos dazu [hier](docs/svg.md#rechteck).
 
 ---

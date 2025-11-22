@@ -6,33 +6,34 @@ file = 'image.svg'
 ## SETTINGS ##
 # General
 mode = "quad"
+submode = "pythagoras"
 start = "bottom"
 
 # Board
-svg_height = 900
-svg_width = 1600
+svg_height = 900/2
+svg_width = 1600/2
 
 # Size
-initial_size = 300
-dropoff = 3
+initial_size = 100
+dropoff = 1.2
 exponential_dropoff = True
 line_width = 1/20
 
 # Rotation
 keep_rotation = True
-spread = 90 # Not working with lines; keep 0 for now!
+spread = 30 # Not working with lines; keep 0 for now!
 
 # Colour
 colour_background = "#FFFFFF"
 colour_lines      = "#000000"
 
 # Location
-anchor_child = "edge"
-anchor_parent = "edge"
+anchor_child = "corner"
+anchor_parent = "corner"
 
 # Generations & Children
-max_generations = 4
-children_count = 3
+max_generations = 14
+children_count = 1
 initial_children_count = None
 
 ## SVG STUFF ##
@@ -43,7 +44,8 @@ def init_file(filename):
   to_file(f'<svg xmlns="http://www.w3.org/2000/svg" width="{str(svg_width)}" height="{str(svg_height)}">') # svg header
 
   # Hintergrund
-  to_file(f'<rect width="{str(svg_width)}" height="{str(svg_height)}" fill="{colour_background}" />')
+  if not (colour_background is None):
+    to_file(f'<rect width="{str(svg_width)}" height="{str(svg_height)}" fill="{colour_background}" />')
   # Kleiner contents marker; macht die svg Datei weningstents ein bisschen übersichtlicher
   to_file('<!-- vv Contents vv -->\n')
 
@@ -75,12 +77,8 @@ def draw_line(x1: float, y1: float, x2: float, y2: float,
   to_file(line_str)
 
 ## NODES ##
-def node(origin_x, origin_y, generation, alpha, parent_length):
+def node(origin_x, origin_y, generation, alpha, node_length):
   ## Mathe
-  # Länge dieser Node berechnen
-  if exponential_dropoff: node_length = parent_length / dropoff
-  else: node_length = initial_size / (generation * dropoff + 1)
-
   # Umwandeln von alpha (deg) zu alpha (rad)
   alpha_rad = alpha * (math.pi / 180)
 
@@ -177,6 +175,10 @@ def node(origin_x, origin_y, generation, alpha, parent_length):
     if ((spread == 0) or (spread is None)) and mode == "line": child_spacing = 180 / children_count
     else: child_spacing = spread
 
+    # Länge der Child nodes Berechnen
+    if exponential_dropoff: child1_length = node_length / dropoff
+    else: child1_length = initial_size / ((generation+1) * dropoff + 1)
+
     ## Aussuchen der child spawns ##
     if anchor_parent == "corner":
       C1_x = P4_x # Also: child 1 wird bei P4 generiert
@@ -210,24 +212,49 @@ def node(origin_x, origin_y, generation, alpha, parent_length):
     r3 = 180
     r4 = 90
 
+    if submode == "pythagoras":
+      child2_length = math.sin(child_spacing * (math.pi / 180)) * node_length
+      beta = 180 - child_spacing - (math.asin(child1_length / node_length) * (180 / math.pi))     # 180° - alpha - gamma = beta, denn alpha + beta + gamma = 180°
+
+      if debug: print(f'Alpha: {round(alpha)} Beta: {round(beta)} Gamma: {round(math.asin(child1_length / node_length) * (180 / math.pi))} Spacing: {round(child_spacing)}')
+
+      child_a = math.cos((r1 + alpha + child_spacing) * (math.pi / 180)) * child1_length
+      child_b = math.sin((r1 + alpha + child_spacing) * (math.pi / 180)) * child1_length
+
+      C1_P2_x = C1_x + child_a
+      C1_P2_y = C1_y - child_b
+
+      C2_P2_x = C2_x + child_b
+      C2_P2_y = C2_y + child_a
+
+      C3_P2_x = C3_x - child_a
+      C3_P2_y = C3_y + child_b
+
+      C4_P2_x = C4_x - child_b
+      C4_P2_y = C4_y - child_a
+
     for i in range(children_count if (generation != 0) or (initial_children_count is None) else initial_children_count): # Wiederholen für alle children, die generiert werden sollen
 
       ## LINES ##
       if mode == "line":
         child_rotation = (i+0.5) * child_spacing + alpha - 90
-        node(P2_x, P2_y, generation+1, child_rotation, node_length) # Generiert eine neue Node
+        node(P2_x, P2_y, generation+1, child_rotation, child1_length) # Generiert eine neue Node
 
       ## QUADS ##
       elif mode == "quad":
         match i+1:
           case 1: # links-oben --> an Ecke P4 / Seite E4
-            node(C1_x, C1_y, generation+1, r1 + alpha + child_spacing, node_length)
+            node(C1_x, C1_y, generation+1, r1 + alpha + child_spacing, child1_length)
+            if submode == "pythagoras": node(C1_P2_x, C1_P2_y, generation+1, (child_spacing + alpha + (beta - 180) + r1), child2_length)
           case 2: # rechts-oben --> an Ecke P3 / Seite E3
-            node(C2_x, C2_y, generation+1, r2 + alpha + child_spacing, node_length)
+            node(C2_x, C2_y, generation+1, r2 + alpha + child_spacing, child1_length)
+            if submode == "pythagoras": node(C2_P2_x, C2_P2_y, generation+1, (child_spacing + alpha + (beta - 180) + r2), child2_length)
           case 3: # rechts-unten --> an Ecke P2 / Seite E2
-            node(C3_x, C3_y, generation+1, r3 + alpha + child_spacing, node_length)
+            node(C3_x, C3_y, generation+1, r3 + alpha + child_spacing, child1_length)
+            if submode == "pythagoras": node(C3_P2_x, C3_P2_y, generation+1, (child_spacing + alpha + (beta - 180) + r3), child2_length)
           case 4: # links-unten --> an Ecke P1 / Seite E1
-            node(C4_x, C4_y, generation+1, r4 + alpha + child_spacing, node_length)
+            node(C4_x, C4_y, generation+1, r4 + alpha + child_spacing, child1_length)
+            if submode == "pythagoras": node(C4_P2_x, C4_P2_y, generation+1, (child_spacing + alpha + (beta - 180) + r4), child2_length)
 
 
 #####################
@@ -240,11 +267,15 @@ init_file(file)
 ## GENERATING TREE ##
 # Aufrufen der Mothernode
 if start == "top":
-  node((svg_width / 2), 0, 0, 0, initial_size*dropoff)
+  node((svg_width / 2), 0, 0, 0, initial_size)
 elif start == "bottom":
-  node((svg_width / 2), svg_height, 0, 0, initial_size*dropoff)
+  node((svg_width / 2), svg_height, 0, 0, initial_size)
 elif start == "mid":
-  node((svg_width / 2), (svg_height / 2) + initial_size/2, 0, 0, initial_size*dropoff)
+  node(origin_x=(svg_width / 2) if (anchor_child == "edge") and (mode == "quad") else ((svg_width / 2) - (initial_size/2)),
+       origin_y=(svg_height / 2) + (initial_size/2),
+       generation=0,
+       alpha=0,
+       node_length=initial_size)
 
 
 ## CLEANUP ##
