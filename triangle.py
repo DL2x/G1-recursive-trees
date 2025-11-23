@@ -1,6 +1,6 @@
 import math
 
-debug = True
+debug = False
 file = 'sierpinski.svg'
 
 ## SETTINGS ##
@@ -27,7 +27,7 @@ def to_file(contents: str):
         print("Error writing to svg file!")
 
 def draw_triangle(ax, ay, bx, by, cx, cy, stroke="#000000"):
-    #Zeichnet Dreieck als SVG-Polygon
+    #Zeichne Dreieck als SVG-Polygon
     tri_str = (
         f'<polygon points="'
         f'{ax},{ay} {bx},{by} {cx},{cy}" '
@@ -35,10 +35,10 @@ def draw_triangle(ax, ay, bx, by, cx, cy, stroke="#000000"):
     )
     to_file(tri_str)
 
-## SIERPINSKI NUR MIT LINIEN ##
+## SIERPINSKI ##
 def sierpinski(ax, ay, bx, by, cx, cy, generation):
     if generation == max_generations:
-        draw_triangle(ax, ay, bx, by, cx, cy)
+        draw_triangle(ax, ay, bx, by, cx, cy) # zeichne großes Dreieck
         return
 
     # Mittelpunkte berechnen
@@ -57,7 +57,7 @@ def sierpinski(ax, ay, bx, by, cx, cy, generation):
               f"BC=({bcx:.1f},{bcy:.1f}), "
               f"CA=({cax:.1f},{cay:.1f})")
 
-    # Rekursion auf die 3 Eckdreiecke – kein "Ausschneiden" in der Mitte
+    # Rekursion auf die 3 Eckdreiecke
     sierpinski(ax,  ay,  abx, aby, cax, cay, generation + 1)  # oben/links
     sierpinski(abx, aby, bx,  by,  bcx, bcy, generation + 1)  # unten/links
     sierpinski(cax, cay, bcx, bcy, cx,  cy,  generation + 1)  # unten/rechts
@@ -73,7 +73,7 @@ side_length = 4000
 tri_height = side_length * math.sqrt(3) / 2
 
 top_x = width / 2
-top_y = 50                           # etwas Abstand nach oben
+top_y = 50
 left_x = top_x - side_length / 2
 left_y = top_y + tri_height
 right_x = top_x + side_length / 2
