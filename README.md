@@ -5,22 +5,24 @@
 Dieses Programm erstellt rekursive Figuren und speichert sie in einer SVG datei ab.
 
 Ihr könnt ruhig selbst mit dem Programm rumspielen.  
-Dafür müsst ihr nur das Programm runterladen und die konstanten Variablen in dem ```## SETTINGS ##``` Abschnitt nach belieben verändern.
+Dafür müsst ihr nur das Programm runterladen ([GithubDocs](https://docs.github.com/en/get-started/start-your-journey/downloading-files-from-github)) und die konstanten Variablen in dem ```## SETTINGS ##``` Abschnitt nach belieben verändern.
 
 ## Vokabeln & Vorwissen
 
-Dieses Programm macht viel mit dem SVG Standart. Mehr zu wie es das macht und eine kleine Übersicht [hier](docs/svg.md).
+(Ja, ich weiß; das ist alles ein schreckliches Deutsch-Englisch Gemisch)
 
-Eine kleine Liste an wichtigen Vokabeln: (Ja, ich weiß; das ist alles ein schreckliches Deutsch-Englisch Gemisch)
+Dieses Programm macht viel mit dem SVG Standard. Mehr zu wie es das macht und eine kleine Übersicht [hier](docs/svg.md).
+
+Eine kleine Liste an wichtigen Vokabeln:
  - **Node**: so werden oft die verschiedenen Knotenpunkte einer rekursiven Struktur genannt. In userem Programm zeichnet aber jede Node außerdem eine "Figur"
- - **Figur**: die einfache Form, die rekursiv gezeichnet wird. [Hier](assets/title_image.png) ist die Figur eine Line. Sie kann aber auch ein Dreieck oder Quadrad (oder jegliche andere Form) sein
- - **Parent**: eine Parent Node ist einfach die Node, die die Child Node hervorgerufen hat. Könnt ihr euch so ähnlich wie beim Stammbaum vorstellen.
+ - **Figur**: die einfache Form, die rekursiv gezeichnet wird. [Hier](assets/title_image.png) ist die Figur eine Line. Sie kann aber auch ein [Dreieck](beispiele/6.sierpinski.svg) oder [Quadrad](beispiele/3.quadratspirale.svg) (oder jegliche andere Form) sein
+ - **Parent**: eine Parent Node ist einfach die Node, die die Child Node hervorgerufen hat. Könnt ihr euch so ähnlich wie beim Familienstammbaum vorstellen; Eltern (parents) haben Kinder (children).
  - **Child**: siehe ```Parent```
  - **Mother node**: Die allererste Node. Sie wird in der Regel im Programm direkt aufgerufen.
 
 ## Einstellungen
  
-*Note*: Einige Erklärungen machen möglicheweise keinen Sinn, wenn ihr das Programm noch nicht versteht
+*Note*: Einige Erklärungen machen möglicheweise keinen Sinn wenn ihr das Programm noch nicht versteht
 
 | Einstellung               | mögliche Werte   | Erklärung                                               |
 | :------------------------ | :--------------- | :------------------------------------------------------ |
@@ -236,7 +238,8 @@ Eine kleine Liste an wichtigen Vokabeln: (Ja, ich weiß; das ist alles ein schre
 
   ![beispiel_6](beispiele/6.sierpinski.svg)
 
-  **NICHT MÖGLICH MIT [```main.py```](main.py); BENUTZE [```triangle.py```](triangle.py)**
+  **NICHT MÖGLICH MIT [```main.py```](main.py); BENUTZE [```triangle.py```](triangle.py)**  
+  (Zu faul ```triangle.py``` in ```main.py``` zu mergen)
 
 </details>
 
@@ -284,13 +287,13 @@ def to_file(contents: str):
   try: # Error handling
     with open(file, 'a') as f: # SVG Datei öffnen
       f.write(contents + "\n") # Contents in die SVG Datei schreiben
-  except: # (try-except-struktur: wenn die Befehle oben einen Crash produzieren, wird stattdessen der Code hier vv ausgeführt)
+  except:
     print("Error writing to svg file!")
 ```
 
 Hier benutzen wir eine Try-Except-Struktur, die wir im Unterricht noch nicht hatten.  
 Diese Strukturen können benutzt werden um Crashes vorzubeugen:  
-Sollte eigentlich das Programm, aufgrund des Codes unter ```try```, crashen, führt Python einfach stattdessen den Code unter ```except``` aus.
+Sollte eigentlich das Programm aufgrund des Codes unter ```try``` crashen, führt Python einfach stattdessen den Code unter ```except``` aus.
 
 Mit ```with open(pfad_zur_datei, modus) as variablenname``` kann man in Python Dateien als ein Text öffnen.  
 Wir benutzen: 
@@ -302,7 +305,7 @@ with open(file, 'a') as f:
 Also:
  - Datei: Inhalt der ```file``` variable (also 'image.svg')
  - Modus: ```a```: append mode; wir werden den Inhalt der Datei nicht ersetzen, sondern anhängen
- - Name: ```f```: steht für 'file' (dieser Name ist ja aber schon vergeben); ist die Variable, welche die Datei representiert, mit der wir arbeiten, wenn wir die Datei bearbeiten wollen.
+ - Name: ```f```: steht für 'file' (dieser Name ist ja aber schon vergeben); ist die Variable, welche die Datei representiert; mit der wir arbeiten, wenn wir die Datei bearbeiten wollen.
 
 Und dann können wir neue Linien mit ```f.write(some_string)``` hinzufügen:
 
@@ -315,6 +318,8 @@ f.write(contents + "\n")
 *Note*: Wir benutzen hier kein ```f.close()```, da ```with``` das für uns macht.
 
 Mehr infos zu Python's ```open``` Befehl [hier](https://docs.python.org/3/library/functions.html#open).
+
+Ein anfängerfreundlicher (deutscher) Artikel zu Python & Dateioperationen: [hier](https://de.python-3.com/?p=2837) (<-- **KEINE OFFIZIELLEN PYTHON DOCS!**)
 
 ---
 
@@ -341,9 +346,9 @@ def draw_line(x1: float, y1: float, x2: float, y2: float,
   to_file(line_str)
 ```
 
-Diese Linie geht von P¹(x1|y1) zu P²(x2|y2). (Diese Punkte werden noch seeeehr wichtig..)
+Diese Linie geht von P1(x1|y1) zu P2(x2|y2). (Diese Punkte werden noch seeeehr wichtig..)
 
-Wenn du mehr über svg-line wissen willst, kannst du [hier](docs/svg.md#linie) mehr finden.
+Wenn du mehr über ```svg-line``` wissen willst, kannst du [hier](docs/svg.md#linie) mehr finden.
 
 Die Argumente (x1,x2,y1,y2,width,colour) werden dann mithilfe von [f-strings](https://docs.python.org/3/tutorial/inputoutput.html#tut-f-strings) in den String eingegeben.
 
@@ -404,7 +409,7 @@ P4_y = P1_y - a
 ---
 
 Wollen wir dann aber die Mitte der Seiten berechnen, müssen wir nur ```length / 2``` anstatt von ```length``` eingeben:  
-(Wir nennen diese Punkte mal E1-4 und nein, ich habe hierfür keine Darstellung)
+(Wir nennen diese Punkte mal E1-4 (und nein, ich habe hierfür keine Darstellung))
 
 ```
 c = cos(alpha) * (length / 2)
@@ -425,7 +430,7 @@ E4_y = P1_y - a + c
 
 Die Punkte E1-4 können wir dann benutzen um Children an den Anchors ```edge```, anstatt an den ```corners``` zu generieren.
 
-Wir können auch P1 von E1 generieren, wenn ```anchor_child``` auf ```edge``` gesetzt ist:
+Wir müssen P1 aber erstmal von E1 generieren, wenn ```anchor_child``` auf ```edge``` gesetzt ist:
 
 ```
 P1_x = origin_x - c
@@ -450,6 +455,10 @@ Eine kleine Sache, die uns echt für eine Weile beschäftigen kann (den Fehler h
 alpha_rad = alpha * (math.pi / 180)
 ```
 
+*Note*: Ihr erinnert euch doch sicher noch:
+  - "Rad": 1 mal rundherrum = 2 * pi
+  - "Deg": 1 mal rundherrum = 360°
+
 ---
 
 Danach können wir ohne Probleme P1-4 & E1-4 berechnen: (siehe [hier](README.md#mathe))
@@ -463,10 +472,6 @@ b = math.sin(alpha_rad) * node_length
 
 c = math.cos(alpha_rad) * (node_length / 2)
 d = math.sin(alpha_rad) * (node_length / 2)
-
-
-# Optionale Debug Infos
-if debug: print(f"Gen: {generation} Alpha: {alpha} a: {round(a)} b: {round(b)}")
 
 # Berechnen der Eck-Koordinaten
 if anchor_child == "corner":
@@ -505,14 +510,6 @@ E4_y = P1_y - a + c
 
 ---
 
-Debug infos:
-
-```python
-if debug and (mode == "quad"): print(f"Gen: {generation} P1({round(P1_x)}|{round(P1_y)}) P2({round(P2_x)}|{round(P2_y)}) P3({round(P3_x)}|{round(P3_y)}) P4({round(P4_x)}|{round(P4_y)})")
-```
-
----
-
 Und jetzt müssen wir die Form der Node zeichnen:
 
 Für lines:
@@ -525,33 +522,38 @@ if mode == "line":
             comment=f"Gen: {generation}")
 ```
 
-Ist ja super einfach, nur eine Linie von P1 zu P2
+Ist ja super einfach; nur eine Linie von P1 zu P2
 
 Für Quadrate:
 
 ```python
 elif mode == "quad":
   to_file(f'<!-- Gen {generation} Quad -->')
+
   draw_line(x1=P1_x, y1=P1_y, x2=P2_x, y2=P2_y, 
         width=(node_length * line_width), 
-        colour=colour_lines if not debug else "#FF0000", # red
+        colour=colour_lines
         comment=f"q1; Gen{generation}",
         addtional_option='stroke-linecap="square"')
+
   draw_line(x1=P2_x, y1=P2_y, x2=P3_x, y2=P3_y, 
         width=(node_length * line_width), 
-        colour=colour_lines if not debug else "#00FF00", # green
+        colour=colour_lines
         comment=f"q2; Gen{generation}",
         addtional_option='stroke-linecap="square"')
+
   draw_line(x1=P3_x, y1=P3_y, x2=P4_x, y2=P4_y, 
         width=(node_length * line_width), 
-        colour=colour_lines if not debug else "#0000FF", # blue
+        colour=colour_lines
         comment=f"q3; Gen{generation}",
         addtional_option='stroke-linecap="square"')
+
   draw_line(x1=P4_x, y1=P4_y, x2=P1_x, y2=P1_y, 
         width=(node_length * line_width), 
-        colour=colour_lines if not debug else "#FFFF00", # yellow
+        colour=colour_lines
         comment=f"q4; Gen{generation}",
         addtional_option='stroke-linecap="square"')
+
   to_file(f'<!-- Gen {generation} Quad End -->')
 ```
 
@@ -566,7 +568,7 @@ Hier eine kleine Übersicht über linecaps:
 
 ![bild_linecaps](assets/linecaps.png)
 
-Um die Ecken des Quadrats voll auszufüllen, müssen wir nur squarecaps benutzen:
+Um die Ecken des Quadrats voll auszufüllen, müssen wir nur ```square``` Linecaps benutzen:
 
 ```python
 addtional_option='stroke-linecap="square"'
@@ -576,13 +578,14 @@ addtional_option='stroke-linecap="square"'
 
 Nachdem wir die Figur gezeichnet haben, müssen wir den ganzen "rekursiv" Teil machen: das generieren der Children.
 
-Erstmal müssen wir nartülich dafür sorgen das wir nicht eine Unendliche Rekursionstiefe erreichen:
+Erstmal sollten wir natürlich dafür sorgen, dass wir nicht eine unendliche Rekursionstiefe erreichen: (unendlich so weiter machen)  
+*Note*: Python merkt automatisch wenn wir zu tief sind und Crasht dann einfach; besser als wenn es Windows / Linux ist
 
 ```python
 if generation < max_generations:
 ```
 
-Nun müssen wir ```child_spacing``` ermittlen:
+Nun müssen wir ```child_spacing``` ermitteln:
 
 ```python
 if (spread is None) or mode == "line": child_spacing = 180 / children_count
@@ -613,7 +616,7 @@ if anchor_parent == "corner":
   C4_y = P1_y
 
 elif anchor_parent == "edge":
-  C1_x = E4_x # Also: child 1 wird bei Q4 generiert
+  C1_x = E4_x # Also: child 1 wird bei E4 generiert
   C1_y = E4_y
 
   C2_x = E3_x
@@ -636,7 +639,9 @@ r3 = 180
 r4 = 90
 ```
 
-Sollten ```submode``` auf ```pythagoras``` gestellt sein, brauchen wir noch ein paar mehr infos, aber darüber reden wir [hier](README.md#submodules)
+---
+
+Sollten ```submode``` auf ```pythagoras``` gestellt sein, brauchen wir noch ein paar mehr Daten, aber darüber reden wir [hier](README.md#submodules)
 
 ---
 
@@ -672,9 +677,9 @@ elif mode == "quad":
     ## Sollte i+1 > 4 --> nichts
 ```
 
-(Bei den Quadraten müssen ja die (maximal) vier Children an den Verschiedenen Punkten, nicht immer am gleichen generieren)
+(Bei den Quadraten müssen wir ja die (maximal) vier Children an den Verschiedenen Punkten, nicht immer am gleichen generieren)
 
-Da beim Pythagoras-Baum statt einem Child, immer zwei geneiert werden müssen sieht das dann so aus:
+Da beim Pythagoras-Baum statt einem Child, immer zwei generiert werden müssen, sieht das dann so aus:
 
 ```python
 elif mode == "quad":
@@ -695,14 +700,14 @@ elif mode == "quad":
 
 ---
 
-Nun müssen wir das ganze nur noch ausführen.  
-Dazu rufen wir als aller erstes ```init_file``` auf:
+Nun müssen wir das Ganze nur noch ausführen.  
+Dazu rufen wir als allererstes ```init_file``` auf:
 
 ```python
 init_file(file)
 ```
 
-Dann brauchen wir, abhängig von den Einstellungen, ```origin_x``` und ```origin_y``` der Mothernode:
+Dann brauchen wir, abhängig von den Einstellungen, verschiedene ```origin_x```- und ```origin_y```-Werte der Mothernode:
 
 ```python
 if (mode == "quad") and (anchor_child != "edge"): startx = (svg_width / 2) - (initial_size / 2)
@@ -717,7 +722,7 @@ elif start == "bottom":
   starty = svg_height
 ```
 
-*Note*: Der Code ist ziehmlich selbsterklärend, daher werden ich nicht weiter drauf eingehen (Mach doch ein [issue](https://github.com/IamLegende7/G1-recursive-trees/issues/new) auf)
+*Note*: Der Code ist ziemlich selbsterklärend, daher werden ich nicht weiter drauf eingehen (Mach doch ein [issue](https://github.com/IamLegende7/G1-recursive-trees/issues/new) auf)
 
 Und dann; der Star der Show:
 
@@ -738,7 +743,7 @@ Zum Schluss braucht die SVG Datei noch ihren Footer:
 to_file('\n</svg>')
 ```
 
-### Submodules
+### Submodes
 
 ---
 
