@@ -64,7 +64,7 @@ def draw_line(x1: float, y1: float, x2: float, y2: float,
               comment: str = None,
               addtional_option: str = None
               ):
-  # Grund String
+  # Grund-String
   line_str = f'<line x1="{str(x1)}" y1="{str(y1)}" x2="{str(x2)}" y2="{str(y2)}" stroke="{colour}" stroke-width="{str(width)}"'
   # Extra optionen
   if not (addtional_option is None): line_str = line_str + " " + addtional_option
@@ -113,8 +113,8 @@ def node(origin_x, origin_y, generation, alpha, node_length):
   P4_y = P1_y - a
 
 
-  # BERECHNUNG FÜR Q1-4 ##
-  # Q-Punkte sind in der Mitte der Seiten
+  # BERECHNUNG FÜR E1-4 ##
+  # E-Punkte sind in der Mitte der Seiten
 
   # Berechenen
   E1_x = P1_x + c
@@ -172,7 +172,7 @@ def node(origin_x, origin_y, generation, alpha, node_length):
   ## Generate Children
   if generation < max_generations: # Limitiert die Generationen
     # Spacing errechnen
-    if ((spread == 0) or (spread is None)) and mode == "line": child_spacing = 180 / children_count
+    if (spread is None) or mode == "line": child_spacing = 180 / children_count
     else: child_spacing = spread
 
     # Länge der Child nodes Berechnen
@@ -214,7 +214,7 @@ def node(origin_x, origin_y, generation, alpha, node_length):
 
     if submode == "pythagoras":
       child2_length = math.sin(child_spacing * (math.pi / 180)) * node_length
-      beta = 180 - child_spacing - (math.asin(child1_length / node_length) * (180 / math.pi))     # 180° - alpha - gamma = beta, denn alpha + beta + gamma = 180°
+      beta = 180 - child_spacing - (math.asin(child1_length / node_length) * (180 / math.pi))     # 180° - child_spacing - gamma = beta, denn alpha + beta + gamma = 180°
 
       if debug: print(f'Alpha: {round(alpha)} Beta: {round(beta)} Gamma: {round(math.asin(child1_length / node_length) * (180 / math.pi))} Spacing: {round(child_spacing)}')
 
@@ -265,17 +265,24 @@ def node(origin_x, origin_y, generation, alpha, node_length):
 init_file(file)
 
 ## GENERATING TREE ##
-# Aufrufen der Mothernode
+# Mothernode Einstellungen
+if (mode == "quad") and (anchor_child != "edge"): startx = (svg_width / 2) - (initial_size / 2)
+else:                                             startx = (svg_width / 2)
+
 if start == "top":
-  node((svg_width / 2), 0, 0, 0, initial_size)
-elif start == "bottom":
-  node((svg_width / 2), svg_height, 0, 0, initial_size)
+  starty = 0
 elif start == "mid":
-  node(origin_x=(svg_width / 2) if (anchor_child == "edge") and (mode == "quad") else ((svg_width / 2) - (initial_size/2)),
-       origin_y=(svg_height / 2) + (initial_size/2),
-       generation=0,
-       alpha=0,
-       node_length=initial_size)
+  if mode == "quad": starty = (svg_height / 2) + (initial_size / 2)
+  else:              starty = svg_height / 2
+elif start == "bottom":
+  starty = svg_height
+
+# Aufrufen der Mothernode
+node(origin_x=startx,
+     origin_y=starty,
+     generation=0,
+     alpha=0,
+     node_length=initial_size)
 
 
 ## CLEANUP ##
