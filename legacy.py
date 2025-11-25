@@ -1,9 +1,9 @@
 import math
 
-
-
 file = 'image.svg'
 
+
+## SETTINGS ##
 # Board
 height = 900
 width = 1600
