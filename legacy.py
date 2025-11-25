@@ -56,7 +56,7 @@ def node(startx, starty, generation, alpha, length):
   endy = starty + y_offset
 
   ## Drawing
-  draw_line(x1=startx, y1=starty, x2=endx, y2=endy, width=(line_width / (generation + 1)), colour="#000000")
+  draw_line(x1=startx, y1=starty, x2=endx, y2=endy, width=(line_width / (generation + 1)), color="#000000")
 
   if generation < max_generations:
     ## Generate Children

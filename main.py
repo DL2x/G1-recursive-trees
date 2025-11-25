@@ -23,9 +23,9 @@ line_width = 1/20
 keep_rotation = True
 spread = 30 # Not working with lines; keep 0 for now!
 
-# Colour
-colour_background = "#FFFFFF"
-colour_lines      = "#000000"
+# color
+color_background = "#FFFFFF"
+color_lines      = "#000000"
 
 # Location
 anchor_child = "corner"
@@ -44,8 +44,8 @@ def init_file(filename):
   to_file(f'<svg xmlns="http://www.w3.org/2000/svg" width="{str(svg_width)}" height="{str(svg_height)}">') # svg header
 
   # Hintergrund
-  if not (colour_background is None):
-    to_file(f'<rect width="{str(svg_width)}" height="{str(svg_height)}" fill="{colour_background}" />')
+  if not (color_background is None):
+    to_file(f'<rect width="{str(svg_width)}" height="{str(svg_height)}" fill="{color_background}" />')
   # Kleiner contents marker; macht die svg Datei weningstents ein bisschen übersichtlicher
   to_file('<!-- vv Contents vv -->\n')
 
@@ -60,12 +60,12 @@ def to_file(contents: str):
 # Diese Funktion schreibt (bzw. "malt") eine linie in die SVG Datei
 def draw_line(x1: float, y1: float, x2: float, y2: float, 
               width: float,
-              colour: str = "#000000",
+              color: str = "#000000",
               comment: str = None,
               addtional_option: str = None
               ):
   # Grund-String
-  line_str = f'<line x1="{str(x1)}" y1="{str(y1)}" x2="{str(x2)}" y2="{str(y2)}" stroke="{colour}" stroke-width="{str(width)}"'
+  line_str = f'<line x1="{str(x1)}" y1="{str(y1)}" x2="{str(x2)}" y2="{str(y2)}" stroke="{color}" stroke-width="{str(width)}"'
   # Extra optionen
   if not (addtional_option is None): line_str = line_str + " " + addtional_option
 
@@ -139,7 +139,7 @@ def node(origin_x, origin_y, generation, alpha, node_length):
   if mode == "line":
     draw_line(x1=P1_x, y1=P1_y, x2=P2_x, y2=P2_y, 
               width=(node_length * line_width), 
-              colour=colour_lines, 
+              color=color_lines, 
               comment=f"Gen: {generation}")
 
   ## QUAD ##
@@ -147,22 +147,22 @@ def node(origin_x, origin_y, generation, alpha, node_length):
     to_file(f'<!-- Gen {generation} Quad -->')
     draw_line(x1=P1_x, y1=P1_y, x2=P2_x, y2=P2_y, 
           width=(node_length * line_width), 
-          colour=colour_lines if not debug else "#FF0000", # red
+          color=color_lines if not debug else "#FF0000", # red
           comment=f"q1; Gen{generation}",
           addtional_option='stroke-linecap="square"')
     draw_line(x1=P2_x, y1=P2_y, x2=P3_x, y2=P3_y, 
           width=(node_length * line_width), 
-          colour=colour_lines if not debug else "#00FF00", # green
+          color=color_lines if not debug else "#00FF00", # green
           comment=f"q2; Gen{generation}",
           addtional_option='stroke-linecap="square"')
     draw_line(x1=P3_x, y1=P3_y, x2=P4_x, y2=P4_y, 
           width=(node_length * line_width), 
-          colour=colour_lines if not debug else "#0000FF", # blue
+          color=color_lines if not debug else "#0000FF", # blue
           comment=f"q3; Gen{generation}",
           addtional_option='stroke-linecap="square"')
     draw_line(x1=P4_x, y1=P4_y, x2=P1_x, y2=P1_y, 
           width=(node_length * line_width), 
-          colour=colour_lines if not debug else "#FFFF00", # yellow
+          color=color_lines if not debug else "#FFFF00", # yellow
           comment=f"q4; Gen{generation}",
           addtional_option='stroke-linecap="square"')
     to_file(f'<!-- Gen {generation} Quad End -->')
